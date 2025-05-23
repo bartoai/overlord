@@ -968,6 +968,31 @@
     terminalContent.scrollTop = terminalContent.scrollHeight;
 }
 
+function typeAIResponse(text) {
+    const output = document.getElementById('terminalOutput');
+    const div = document.createElement('div');
+    div.className = 'terminal-output ai-response';
+    output.appendChild(div);
+    
+    let index = 0;
+    const typingSpeed = 30; // Milliseconds between each character
+    
+    function typeNextChar() {
+        if (index < text.length) {
+            div.innerHTML = text.substring(0, index + 1);
+            index++;
+            
+            // Auto-scroll as text is being typed
+            const terminalContent = document.getElementById('terminalContent');
+            terminalContent.scrollTop = terminalContent.scrollHeight;
+            
+            setTimeout(typeNextChar, typingSpeed);
+        }
+    }
+    
+    typeNextChar();
+}
+
 async function sendToAI(message) {
     try {
         addToTerminal('Processing...', 'loading');
@@ -992,8 +1017,8 @@ async function sendToAI(message) {
         const loadingMsg = document.querySelector('.loading');
         if (loadingMsg) loadingMsg.remove();
         
-        // Add AI response
-        addToTerminal(`OVERLORD: ${data.message}`, 'ai-response');
+        // Type out the AI response
+        typeAIResponse(`OVERLORD: ${data.message}`);
         
     } catch (error) {
         // Remove loading message
