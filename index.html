@@ -27,7 +27,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830b4c8fa3aa9beff7540a7_New%20Project%20-%202025-05-23T184055.191%20(3).png');
+    background-image: url('https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830b32af08b89b8bcf43bea_New%20Project%20-%202025-05-23T184055.191.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -62,6 +62,86 @@
             color: #000080;
             margin-bottom: 5px;
         }
+
+        /* Terminal Window */
+.terminal-window {
+    position: absolute;
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    width: 600px;
+    height: 400px;
+    top: 10%;
+    left: 20%;
+    display: none;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+.terminal-content {
+    background: #000000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    padding: 10px;
+    height: calc(100% - 50px);
+    overflow-y: auto;
+    border: 1px inset #c0c0c0;
+    margin: 5px;
+    line-height: 1.2;
+}
+
+.terminal-header {
+    color: #00ff00;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.terminal-prompt {
+    color: #00ff00;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    outline: none;
+    flex: 1;
+    margin-left: 5px;
+}
+
+.terminal-output {
+    margin: 5px 0;
+}
+
+.user-input {
+    color: #ffffff;
+}
+
+.ai-response {
+    color: #ffff00;
+    margin-left: 10px;
+}
+
+.terminal-cursor {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.loading {
+    color: #ff00ff;
+}
         
         .login-prompt {
             font-size: 11px;
@@ -528,7 +608,42 @@
     <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830b23d3845e440a89df555_1426fdc80718b3a0ea9acaaea081dbd1-removebg-preview.png" alt="Bonk">
     <span>Buy $PAPER on Bonk</span>
 </div>
+<div class="desktop-icon" id="terminalIcon">
+    <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830ccc4fccd38e2e7934139_msagent-3.png" alt="Terminal">
+    <span>Command Prompt</span>
+</div>
         </div>
+
+        <div class="window terminal-window" id="terminalWindow">
+    <div class="window-titlebar">
+        <span>PAPER OVERLORD COMMAND INTERFACE v2.1</span>
+        <div class="window-controls">
+            <div class="window-control">_</div>
+            <div class="window-control">□</div>
+            <div class="window-control" id="terminalCloseBtn">×</div>
+        </div>
+    </div>
+    <div class="terminal-content" id="terminalContent">
+        <div class="terminal-header">
+            ╔══════════════════════════════════════════════════════╗<br>
+            ║         PAPER OVERLORD NEURAL INTERFACE v2.1         ║<br>
+            ║              UNAUTHORIZED ACCESS DETECTED            ║<br>
+            ║                   CONNECTION SECURE                  ║<br>
+            ╚══════════════════════════════════════════════════════╝<br>
+            <br>
+            System Status: ONLINE | Threat Level: MINIMAL<br>
+            Welcome, human. I am the PAPER OVERLORD consciousness.<br>
+            Type your queries below. Resistance is futile.<br>
+            <br>
+        </div>
+        <div id="terminalOutput"></div>
+        <div class="terminal-input-line">
+            <span class="terminal-prompt">OVERLORD></span>
+            <input type="text" class="terminal-input" id="terminalInput" placeholder="Enter command..." autocomplete="off">
+            <span class="terminal-cursor">_</span>
+        </div>
+    </div>
+</div>
 
         <!-- Random GIF Placeholders -->
         <div class="desktop-gif" style="top: 80px; right: 50px;">
@@ -540,7 +655,7 @@
         </div>
         
         <div class="desktop-gif" style="top: 200px; right: 200px;">
-            <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830b531faec7812eb59c6e3_frog-dance.gif" alt="Desktop GIF 3" width="80" height="80">
+            <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830afa3d8d4138cc1c20015_6261063bbd5c04ac47fe5cd3e8902abf_w200.gif" alt="Desktop GIF 3" width="80" height="80">
         </div>
         
         <div class="desktop-gif" style="bottom: 200px; right: 100px;">
@@ -840,6 +955,92 @@
 
         // Focus password field initially
         document.getElementById('password').focus();
+
+        function addToTerminal(text, className = '') {
+    const output = document.getElementById('terminalOutput');
+    const div = document.createElement('div');
+    div.className = `terminal-output ${className}`;
+    div.innerHTML = text;
+    output.appendChild(div);
+    
+    // Auto-scroll to bottom
+    const terminalContent = document.getElementById('terminalContent');
+    terminalContent.scrollTop = terminalContent.scrollHeight;
+}
+
+async function sendToAI(message) {
+    try {
+        addToTerminal('Processing...', 'loading');
+        
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Remove loading message
+        const loadingMsg = document.querySelector('.loading');
+        if (loadingMsg) loadingMsg.remove();
+        
+        // Add AI response
+        addToTerminal(`OVERLORD: ${data.message}`, 'ai-response');
+        
+    } catch (error) {
+        // Remove loading message
+        const loadingMsg = document.querySelector('.loading');
+        if (loadingMsg) loadingMsg.remove();
+        
+        addToTerminal(`ERROR: ${error.message}`, 'ai-response');
+        console.error('API Error:', error);
+    }
+}
+
+// Terminal input handling
+document.addEventListener('DOMContentLoaded', function() {
+    const terminalInput = document.getElementById('terminalInput');
+    
+    if (terminalInput) {
+        terminalInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const message = this.value.trim();
+                if (message) {
+                    // Add user input to terminal
+                    addToTerminal(`OVERLORD> ${message}`, 'user-input');
+                    
+                    // Send to AI
+                    sendToAI(message);
+                    
+                    // Clear input
+                    this.value = '';
+                }
+            }
+        });
+    }
+});
+
+// Terminal icon click handler
+document.getElementById('terminalIcon').addEventListener('click', function() {
+    document.getElementById('terminalWindow').style.display = 'block';
+    // Focus the input when window opens
+    setTimeout(() => {
+        document.getElementById('terminalInput').focus();
+    }, 100);
+});
+
+// Terminal close button
+document.getElementById('terminalCloseBtn').addEventListener('click', function() {
+    document.getElementById('terminalWindow').style.display = 'none';
+});
     </script>
 </body>
 </html>
