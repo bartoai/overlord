@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlord Paper Company</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MS+Sans+Serif:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'MS Sans Serif', sans-serif;
+            font-size: 11px;
+            background: #008080;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #008080 0%, #004040 100%);
+            position: relative;
+        }
+        
+        .login-box {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 20px;
+            width: 350px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            background: #ff6b6b;
+            border: 1px inset #c0c0c0;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .company-name {
+            font-weight: bold;
+            font-size: 14px;
+            color: #000080;
+            margin-bottom: 5px;
+        }
+        
+        .login-prompt {
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 3px;
+            border: 1px inset #c0c0c0;
+            background: white;
+            font-family: inherit;
+            font-size: 11px;
+        }
+        
+        .login-button {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 8px 20px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        .login-button:hover {
+            background: #d4d4d4;
+        }
+        
+        .login-button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Desktop Environment */
+        .desktop {
+            display: none;
+            height: 100vh;
+            background: #008080;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .desktop-icons {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .desktop-icon {
+            width: 64px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .desktop-icon img {
+            width: 32px;
+            height: 32px;
+            background: #ffeb3b;
+            border: 1px solid #000;
+            margin-bottom: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .desktop-icon span {
+            font-size: 10px;
+            display: block;
+        }
+        
+        /* Window */
+        .window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .window-titlebar {
+            background: linear-gradient(90deg, #0000ff 0%, #8080ff 100%);
+            color: white;
+            padding: 3px 5px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+        
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .window-control {
+            width: 16px;
+            height: 14px;
+            background: #c0c0c0;
+            border: 1px outset #c0c0c0;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .window-control:active {
+            border: 1px inset #c0c0c0;
+        }
+        
+        .window-content {
+            padding: 10px;
+            height: calc(100% - 30px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .video-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            border: 1px inset #c0c0c0;
+        }
+        
+        .video-container video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #c0c0c0;
+            border-top: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+        }
+        
+        .start-button {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 4px 8px;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .start-button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        .start-icon {
+            width: 16px;
+            height: 16px;
+            background: #ff0000;
+        }
+        
+        .taskbar-time {
+            margin-left: auto;
+            padding: 4px 8px;
+            border: 1px inset #c0c0c0;
+            font-size: 10px;
+        }
+        
+        /* Draggable window functionality */
+        .window.dragging {
+            z-index: 1000;
+        }
+        
+        /* Video window specific styling */
+        .video-window {
+            width: 640px;
+            height: 480px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="company-logo">OP</div>
+                <div class="company-name">Overlord Paper Company</div>
+                <div class="login-prompt">Enter your network password</div>
+            </div>
+            <div class="input-group">
+                <label for="username">User name:</label>
+                <input type="text" id="username" value="Administrator">
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password">
+            </div>
+            <button class="login-button" id="loginBtn">OK</button>
+        </div>
+    </div>
+
+    <!-- Desktop Environment -->
+    <div class="desktop" id="desktop">
+        <div class="desktop-icons">
+            <div class="desktop-icon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkZFQjNCIi8+CjxwYXRoIGQ9Ik04IDhIMjRWMjRIOFY4WiIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K" alt="My Computer">
+                <span>My Computer</span>
+            </div>
+            <div class="desktop-icon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjNENBRjUwIi8+CjxwYXRoIGQ9Ik04IDEySDI0VjIwSDhWMTJaIiBmaWxsPSIjRkZGRkZGIi8+CjwvdXZnPgo=" alt="Documents">
+                <span>My Documents</span>
+            </div>
+            <div class="desktop-icon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkY1NzIyIi8+CjxwYXRoIGQ9Ik0xMiA4SDE2VjI0SDEyVjhaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xNiA4SDIwVjI0SDE2VjhaIiBmaWxsPSIjRkZGRkZGIi8+CjwvdXZnPgo=" alt="Recycle Bin">
+                <span>Recycle Bin</span>
+            </div>
+        </div>
+
+        <!-- Video Window -->
+        <div class="window video-window" id="videoWindow">
+            <div class="window-titlebar">
+                <span>Overlord Paper Company - Media Player</span>
+                <div class="window-controls">
+                    <div class="window-control">_</div>
+                    <div class="window-control">□</div>
+                    <div class="window-control" id="closeBtn">×</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="video-container">
+                    <video id="companyVideo" controls autoplay>
+                        <source src="https://res.cloudinary.com/dxwbxipab/video/upload/v1748019111/Untitled_video_-_Made_with_Clipchamp_35_lgkfba.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="taskbar">
+            <button class="start-button">
+                <div class="start-icon"></div>
+                Start
+            </button>
+            <div class="taskbar-time" id="taskbarTime">12:00 PM</div>
+        </div>
+    </div>
+
+    <script>
+        // Update time in taskbar
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('taskbarTime').textContent = timeString;
+        }
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const loginScreen = document.getElementById('loginScreen');
+            const desktop = document.getElementById('desktop');
+            const videoWindow = document.getElementById('videoWindow');
+            const video = document.getElementById('companyVideo');
+            
+            // Fade out login screen
+            loginScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                loginScreen.style.display = 'none';
+                desktop.style.display = 'block';
+                desktop.classList.add('fade-in');
+                
+                // Show video window after desktop loads
+                setTimeout(() => {
+                    videoWindow.style.display = 'block';
+                    // Attempt to play video (may require user interaction)
+                    video.play().catch(e => {
+                        console.log('Video autoplay prevented, user interaction required');
+                    });
+                }, 500);
+            }, 500);
+        });
+
+        // Window dragging functionality
+        let isDragging = false;
+        let currentWindow = null;
+        let startX, startY, initialX, initialY;
+
+        document.querySelectorAll('.window-titlebar').forEach(titlebar => {
+            titlebar.addEventListener('mousedown', function(e) {
+                if (e.target.classList.contains('window-control')) return;
+                
+                isDragging = true;
+                currentWindow = this.parentElement;
+                currentWindow.classList.add('dragging');
+                
+                startX = e.clientX;
+                startY = e.clientY;
+                
+                const rect = currentWindow.getBoundingClientRect();
+                initialX = rect.left;
+                initialY = rect.top;
+                
+                e.preventDefault();
+            });
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging || !currentWindow) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            currentWindow.style.left = (initialX + deltaX) + 'px';
+            currentWindow.style.top = (initialY + deltaY) + 'px';
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging && currentWindow) {
+                currentWindow.classList.remove('dragging');
+                isDragging = false;
+                currentWindow = null;
+            }
+        });
+
+        // Close button functionality
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('videoWindow').style.display = 'none';
+        });
+
+        // Enter key on login
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
+                document.getElementById('loginBtn').click();
+            }
+        });
+
+        // Focus password field initially
+        document.getElementById('password').focus();
+    </script>
+</body>
+</html>
