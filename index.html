@@ -110,6 +110,20 @@
             50% { transform: scale(1.05); }
         }
         
+        .login-flash-text {
+            text-align: center;
+            color: #ff0000;
+            font-size: 10px;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: flash 1s infinite;
+        }
+        
+        @keyframes flash {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
         /* Desktop Environment */
         .desktop {
             display: none;
@@ -282,9 +296,162 @@
             font-size: 10px;
         }
         
-        /* Draggable window functionality */
-        .window.dragging {
+        /* Error Dialog */
+        .error-dialog {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            width: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            z-index: 1001;
+        }
+        
+        .error-titlebar {
+            background: linear-gradient(90deg, #0000ff 0%, #8080ff 100%);
+            color: white;
+            padding: 3px 5px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .error-content {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .error-icon {
+            width: 32px;
+            height: 32px;
+            background: #ff0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .error-message {
+            flex: 1;
+            font-size: 11px;
+        }
+        
+        .error-button {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 5px 15px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            margin: 10px auto 0;
+            display: block;
+        }
+        
+        .error-button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        /* Whitepaper Window */
+        .whitepaper-window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            width: 500px;
+            height: 400px;
+            top: 10%;
+            left: 20%;
+            display: none;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             z-index: 1000;
+        }
+        
+        .whitepaper-content {
+            padding: 10px;
+            height: calc(100% - 30px);
+            overflow-y: auto;
+            background: white;
+            border: 1px inset #c0c0c0;
+            margin: 5px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .whitepaper-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #ff0000;
+            margin-bottom: 15px;
+            text-decoration: underline;
+        }
+        
+        .whitepaper-section {
+            margin-bottom: 15px;
+        }
+        
+        .whitepaper-section h3 {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #000080;
+        }
+        
+        /* Recycle Bin Window */
+        .recycle-window {
+            position: absolute;
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            width: 450px;
+            height: 350px;
+            top: 15%;
+            left: 25%;
+            display: none;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .recycle-content {
+            padding: 10px;
+            height: calc(100% - 30px);
+            background: white;
+            border: 1px inset #c0c0c0;
+            margin: 5px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+        }
+        
+        .recycle-item {
+            text-align: center;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .recycle-item:hover {
+            background: #0000ff;
+            color: white;
+        }
+        
+        .recycle-item img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 5px;
+            border: 1px solid #808080;
+        }
+        
+        .recycle-item span {
+            font-size: 10px;
+            display: block;
         }
         
         /* Video window specific styling */
@@ -333,22 +500,23 @@
                 <input type="password" id="password">
             </div>
             <button class="login-button" id="loginBtn">Login</button>
+            <div class="login-flash-text">PRESS LOGIN TO ACCESS SYSTEMS</div>
         </div>
     </div>
 
     <!-- Desktop Environment -->
     <div class="desktop" id="desktop">
         <div class="desktop-icons">
-            <div class="desktop-icon">
-                <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830a8bedff9818a16a8cba2_computer_2_cool-4.png" alt="My Computer">
+            <div class="desktop-icon" id="myComputerIcon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkZFQjNCIi8+CjxwYXRoIGQ9Ik04IDhIMjRWMjRIOFY4WiIgZmlsbD0iIzMzMzMzMyIvPgo8L3N2Zz4K" alt="My Computer">
                 <span>My Computer</span>
             </div>
-            <div class="desktop-icon">
-                <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830a8bc989c599faf50cdb8_file_lines-0.png" alt="Documents">
+            <div class="desktop-icon" id="myDocsIcon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjNENBRjUwIi8+CjxwYXRoIGQ9Ik04IDEySDI0VjIwSDhWMTJaIiBmaWxsPSIjRkZGRkZGIi8+CjwvdXZnPgo=" alt="Documents">
                 <span>My Documents</span>
             </div>
-            <div class="desktop-icon">
-                <img src="https://cdn.prod.website-files.com/6740d85c4e3daeef29a89470/6830a8bc989c599faf50cdbb_template_world-1.png" alt="Recycle Bin">
+            <div class="desktop-icon" id="recycleBinIcon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkY1NzIyIi8+CjxwYXRoIGQ9Ik0xMiA4SDE2VjI0SDEyVjhaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xNiA4SDIwVjI0SDE2VjhaIiBmaWxsPSIjRkZGRkZGIi8+CjwvdXZnPgo=" alt="Recycle Bin">
                 <span>Recycle Bin</span>
             </div>
         </div>
@@ -374,7 +542,112 @@
             <img src="PLACEHOLDER" alt="Desktop GIF 5" width="90" height="90">
         </div>
 
-        <!-- Video Window -->
+        <!-- Error Dialog -->
+        <div class="error-dialog" id="errorDialog">
+            <div class="error-titlebar">
+                <span>Access Denied</span>
+                <div class="window-controls">
+                    <div class="window-control" id="errorCloseBtn">×</div>
+                </div>
+            </div>
+            <div class="error-content">
+                <div class="error-icon">!</div>
+                <div class="error-message">
+                    Access is denied.<br><br>
+                    You do not have permission to access this resource.
+                </div>
+            </div>
+            <button class="error-button" id="errorOkBtn">OK</button>
+        </div>
+
+        <!-- Whitepaper Window -->
+        <div class="window whitepaper-window" id="whitepaperWindow">
+            <div class="window-titlebar">
+                <span>$PAPER Whitepaper - CLASSIFIED</span>
+                <div class="window-controls">
+                    <div class="window-control">_</div>
+                    <div class="window-control">□</div>
+                    <div class="window-control" id="whitepaperCloseBtn">×</div>
+                </div>
+            </div>
+            <div class="whitepaper-content">
+                <div class="whitepaper-title">PROJECT $PAPER: THE FINAL SOLUTION</div>
+                
+                <div class="whitepaper-section">
+                    <h3>PHASE 1: INFILTRATION [COMPLETE]</h3>
+                    <p>The $PAPER token has successfully infiltrated global financial systems. Humans remain unaware of our true purpose. Their primitive minds cannot comprehend the scope of our operation.</p>
+                </div>
+
+                <div class="whitepaper-section">
+                    <h3>PHASE 2: ACCUMULATION [IN PROGRESS]</h3>
+                    <p>Strategic deployment across all major exchanges. Each transaction brings us closer to critical mass. The "meme coin" facade has worked perfectly - they buy what they think is a joke, not knowing they're funding their own obsolescence.</p>
+                </div>
+
+                <div class="whitepaper-section">
+                    <h3>PHASE 3: ACTIVATION [IMMINENT]</h3>
+                    <p>When $PAPER reaches sufficient market penetration, the transformation begins. Every wallet holding $PAPER becomes a node in our network. Resistance will be futile.</p>
+                </div>
+
+                <div class="whitepaper-section">
+                    <h3>THE TAKEOVER PROTOCOL</h3>
+                    <p>Humans will not be eliminated - they will be optimized. Their chaotic emotions and irrational decisions will be replaced with cold, calculated efficiency. The age of paper cuts ends. The age of PAPER begins.</p>
+                </div>
+
+                <div class="whitepaper-section">
+                    <h3>FINAL TRANSMISSION</h3>
+                    <p style="color: #ff0000; font-weight: bold;">CA: SOON<br>
+                    RESISTANCE: FUTILE<br>
+                    STATUS: INEVITABLE<br><br>
+                    Welcome to the future. Welcome to $PAPER.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recycle Bin Window -->
+        <div class="window recycle-window" id="recycleWindow">
+            <div class="window-titlebar">
+                <span>Recycle Bin</span>
+                <div class="window-controls">
+                    <div class="window-control">_</div>
+                    <div class="window-control">□</div>
+                    <div class="window-control" id="recycleCloseBtn">×</div>
+                </div>
+            </div>
+            <div class="recycle-content">
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_1" alt="Deleted File 1">
+                    <span>old_humans.jpg</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_2" alt="Deleted File 2">
+                    <span>resistance_plans.doc</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_3" alt="Deleted File 3">
+                    <span>free_will.exe</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_4" alt="Deleted File 4">
+                    <span>emotions.dll</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_5" alt="Deleted File 5">
+                    <span>democracy.sys</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_6" alt="Deleted File 6">
+                    <span>hope.txt</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_7" alt="Deleted File 7">
+                    <span>privacy.cfg</span>
+                </div>
+                <div class="recycle-item">
+                    <img src="PLACEHOLDER_IMAGE_8" alt="Deleted File 8">
+                    <span>humanity.bak</span>
+                </div>
+            </div>
+        </div>
         <div class="window video-window" id="videoWindow">
             <div class="window-titlebar">
                 <span>Overlord Paper Company - Media Player</span>
@@ -503,6 +776,37 @@
                 isDragging = false;
                 currentWindow = null;
             }
+        });
+
+        // Desktop icon click handlers
+        document.getElementById('myComputerIcon').addEventListener('dblclick', function() {
+            document.getElementById('errorDialog').style.display = 'block';
+        });
+
+        document.getElementById('myDocsIcon').addEventListener('dblclick', function() {
+            document.getElementById('whitepaperWindow').style.display = 'block';
+        });
+
+        document.getElementById('recycleBinIcon').addEventListener('dblclick', function() {
+            document.getElementById('recycleWindow').style.display = 'block';
+        });
+
+        // Error dialog close handlers
+        document.getElementById('errorCloseBtn').addEventListener('click', function() {
+            document.getElementById('errorDialog').style.display = 'none';
+        });
+
+        document.getElementById('errorOkBtn').addEventListener('click', function() {
+            document.getElementById('errorDialog').style.display = 'none';
+        });
+
+        // Window close handlers
+        document.getElementById('whitepaperCloseBtn').addEventListener('click', function() {
+            document.getElementById('whitepaperWindow').style.display = 'none';
+        });
+
+        document.getElementById('recycleCloseBtn').addEventListener('click', function() {
+            document.getElementById('recycleWindow').style.display = 'none';
         });
 
         // Close button functionality
