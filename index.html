@@ -519,6 +519,10 @@
                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjRkY1NzIyIi8+CjxwYXRoIGQ9Ik0xMiA4SDE2VjI0SDEyVjhaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xNiA4SDIwVjI0SDE2VjhaIiBmaWxsPSIjRkZGRkZGIi8+CjwvdXZnPgo=" alt="Recycle Bin">
                 <span>Recycle Bin</span>
             </div>
+            <div class="desktop-icon" id="twitterIcon">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMURBMUYyIi8+CjxwYXRoIGQ9Ik0yNCA5Yy0xIDAtMiAxLTIgMnMwIDIgMSAyYzAgMCAxIDAgMSAwczEgMCAxLTFjMC0xIDAtMSAwLTJzLTEtMS0xLTF6TTggMjNjMCAwIDYtMSA5LTRzNC03IDQtMTBjMC0xIDAtMiAwLTNzMC0xIDEtMWMxIDAgMSAwIDEgMHMwIDAgMCAwYzAtMSAwLTEtMS0xcy0xIDAtMSAwYzAtMSAwLTEgMC0ycy0xLTEtMS0xYy0xIDAtMSAwLTEgMHMwIDAtMSAwcy0xIDEtMSAyYzAgMSAwIDIgMCAycy0xIDAtMSAwcy0xIDEtMSAxYzAgMSAwIDEgMCAxcy0xIDEtMSAyYzAgMSAwIDMtMSA0cy0yIDItMiAycy0xIDEtMiAxcy0yIDAtMiAweiIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K" alt="Twitter">
+                <span>Twitter</span>
+            </div>
         </div>
 
         <!-- Random GIF Placeholders -->
@@ -789,6 +793,10 @@
 
         document.getElementById('recycleBinIcon').addEventListener('click', function() {
             document.getElementById('recycleWindow').style.display = 'block';
+        });
+
+        document.getElementById('twitterIcon').addEventListener('click', function() {
+            window.open('TWITTER_URL_PLACEHOLDER', '_blank');
         });
 
         // Error dialog close handlers
